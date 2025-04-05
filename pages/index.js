@@ -94,9 +94,11 @@ import Footer from '../components/Footer';
 
 export default function HomePage() {
   return (
-    <>
-      {/* ... celý tvoj obsah */}
-      <Footer />
-    </>
-  );
-}
+  <>
+    <div style={{ paddingBottom: '60px' }}>
+      {/* sem vlož ten content so všetkými eventami */}
+    </div>
+    <Footer />
+  </>
+);
+
