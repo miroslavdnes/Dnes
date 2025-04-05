@@ -90,3 +90,13 @@ export default function Home() {
     </div>
   );
 }
+import Footer from '../components/Footer';
+
+export default function HomePage() {
+  return (
+    <>
+      {/* ... celý tvoj obsah */}
+      <Footer />
+    </>
+  );
+}
