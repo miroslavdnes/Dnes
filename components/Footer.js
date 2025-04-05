@@ -8,10 +8,13 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <Link href="/" legacyBehavior>
-        <a className={router.pathname === '/' ? styles.active : styles.link}>DNESKA</a>
+        <a className={router.pathname === '/' ? styles.active : styles.link}>🏠 DNESKA</a>
       </Link>
-      <Link href="/mapa" legacyBehavior>
-        <a className={router.pathname === '/mapa' ? styles.active : styles.link}>Mapa</a>
+      <Link href="/onas" legacyBehavior>
+        <a className={router.pathname === '/onas' ? styles.active : styles.link}>ℹ️ O nás</a>
+      </Link>
+      <Link href="/kontakt" legacyBehavior>
+        <a className={router.pathname === '/kontakt' ? styles.active : styles.link}>📞 Kontakt</a>
       </Link>
     </footer>
   );
