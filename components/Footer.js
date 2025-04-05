@@ -3,15 +3,16 @@ import { useRouter } from 'next/router';
 
 export default function Footer() {
   const router = useRouter();
-  const activeStyle = {
-    fontWeight: 'bold',
-    color: '#000'
-  };
 
-  const linkStyle = {
+  const baseStyle = {
     color: '#555',
     textDecoration: 'none',
     fontSize: '14px'
+  };
+
+  const activeStyle = {
+    color: '#000',
+    fontWeight: 'bold'
   };
 
   return (
@@ -21,17 +22,17 @@ export default function Footer() {
       left: 0,
       width: '100%',
       background: '#fff',
-      borderTop: '1px solid #ddd',
+      borderTop: '1px solid #eee',
       display: 'flex',
       justifyContent: 'space-around',
-      padding: '0.8rem 0',
+      padding: '1rem 0',
       zIndex: 100
     }}>
-      <Link href="/" style={router.pathname === '/' ? { ...linkStyle, ...activeStyle } : linkStyle}>
-        🏠 DNESKA
+      <Link href="/" passHref>
+        <a style={router.pathname === '/' ? { ...baseStyle, ...activeStyle } : baseStyle}>🏠 DNESKA</a>
       </Link>
-      <Link href="/mapa" style={router.pathname === '/mapa' ? { ...linkStyle, ...activeStyle } : linkStyle}>
-        🗺️ Mapa
+      <Link href="/mapa" passHref>
+        <a style={router.pathname === '/mapa' ? { ...baseStyle, ...activeStyle } : baseStyle}>🗺️ Mapa</a>
       </Link>
     </footer>
   );
