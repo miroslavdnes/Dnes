@@ -9,25 +9,21 @@ export default function LoginPage() {
   const [step, setStep] = useState(1);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          "recaptcha-container",
-          {
-            size: "invisible",
-            callback: () => {
-              console.log("reCAPTCHA vyriešené");
-            },
+    if (typeof window !== "undefined" && !window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            console.log("reCAPTCHA passed", response);
           },
-          auth
-        );
-      }
+        },
+        auth
+      );
     }
   }, []);
 
   const handleSendCode = async () => {
-    if (typeof window === "undefined") return;
-
     const appVerifier = window.recaptchaVerifier;
 
     try {
@@ -54,9 +50,6 @@ export default function LoginPage() {
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       <h2>Prihlásenie</h2>
 
-      {/* DEBUG - len aby si vedel že to beží na klientovi */}
-      {typeof window === "undefined" && <p>⚠️ Beží na serveri</p>}
-
       {step === 1 && (
         <>
           <input
@@ -76,20 +69,18 @@ export default function LoginPage() {
         <>
           <input
             type="text"
-            placeholder="Overovací kód"
+            placeholder="Zadaj overovací kód"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
           <button onClick={handleVerifyCode} style={{ width: "100%", padding: "1rem" }}>
-            Overiť
+            Overiť kód
           </button>
         </>
       )}
 
-      {/* dôležité pre invisible recaptcha */}
       <div id="recaptcha-container"></div>
     </div>
   );
 }
-
