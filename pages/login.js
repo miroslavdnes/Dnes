@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../lib/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
@@ -8,17 +8,18 @@ export default function LoginPage() {
   const [confirmResult, setConfirmResult] = useState(null);
   const [step, setStep] = useState(1);
 
-  const setupRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
         size: "invisible",
-        callback: () => handleSendCode(),
+        callback: () => {
+          // možno spustiť handleSendCode() automaticky
+        },
       }, auth);
     }
-  };
+  }, []);
 
   const handleSendCode = async () => {
-    setupRecaptcha();
     const appVerifier = window.recaptchaVerifier;
 
     try {
