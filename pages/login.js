@@ -12,8 +12,9 @@ export default function LoginPage() {
     if (typeof window !== "undefined" && !window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
         size: "invisible",
-        callback: () => {
-          // možno spustiť handleSendCode() automaticky
+        callback: (response) => {
+          console.log("reCAPTCHA verified");
+          // callback môže zostať prázdny
         },
       }, auth);
     }
