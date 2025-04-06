@@ -11,6 +11,7 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "framer-motion": "^10.16.1"
   }
 }
