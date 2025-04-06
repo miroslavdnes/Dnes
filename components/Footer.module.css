@@ -1,25 +1,29 @@
-
 .footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
-  background: #fff;
-  border-top: 1px solid #eee;
+  background: white;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.plusButton {
+  background: black;
+  color: white;
+  font-size: 2rem;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
   display: flex;
-  justify-content: space-around;
-  padding: 1rem 0;
-  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.2s;
 }
 
-.link {
-  color: #888;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.active {
-  color: #000;
-  font-weight: bold;
-  text-decoration: none;
+.plusButton:hover {
+  transform: scale(1.1);
 }
