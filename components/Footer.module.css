@@ -1,29 +1,23 @@
 .footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  background: white;
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: white;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 }
 
-.plusButton {
-  background: black;
-  color: white;
-  font-size: 2rem;
-  border-radius: 50%;
-  width: 3.5rem;
-  height: 3.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.link {
+  color: #999;
   text-decoration: none;
-  transition: transform 0.2s;
+  font-size: 0.9rem;
 }
 
-.plusButton:hover {
-  transform: scale(1.1);
+.active {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
 }
