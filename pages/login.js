@@ -6,6 +6,7 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [confirmResult, setConfirmResult] = useState(null);
+  const [step, setStep] = useState(1);
 
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
@@ -19,48 +20,58 @@ export default function LoginPage() {
   const handleSendCode = async () => {
     setupRecaptcha();
     const appVerifier = window.recaptchaVerifier;
-    const formattedPhone = phone.startsWith("+") ? phone : `+421${phone}`;
+
     try {
-      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
-      setConfirmResult(confirmation);
-    } catch (err) {
-      alert("Chyba pri odoslaní kódu: " + err.message);
+      const result = await signInWithPhoneNumber(auth, phone, appVerifier);
+      setConfirmResult(result);
+      setStep(2);
+    } catch (error) {
+      alert("Chyba pri odoslaní kódu.");
+      console.error(error);
     }
   };
 
   const handleVerifyCode = async () => {
     try {
       await confirmResult.confirm(code);
-      alert("Prihlásený! ✅");
-    } catch (err) {
-      alert("Nesprávny kód");
+      alert("Prihlásenie úspešné ✅");
+    } catch (error) {
+      alert("Nesprávny kód.");
+      console.error(error);
     }
   };
 
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h2>Prihlásenie cez telefón</h2>
+      <h2>Prihlásenie</h2>
 
-      {!confirmResult ? (
+      {step === 1 && (
         <>
           <input
             type="tel"
+            placeholder="+421..."
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="Zadaj číslo napr. 900000000"
+            style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
-          <br />
-          <button onClick={handleSendCode}>Odoslať overovací kód</button>
+          <button onClick={handleSendCode} style={{ width: "100%", padding: "1rem" }}>
+            Odoslať kód
+          </button>
         </>
-      ) : (
+      )}
+
+      {step === 2 && (
         <>
           <input
+            type="text"
+            placeholder="Zadaj overovací kód"
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            placeholder="Zadaj kód"
+            style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
-          <br />
-          <button onClick={handleVerifyCode}>Overiť</button>
+          <button onClick={handleVerifyCode} style={{ width: "100%", padding: "1rem" }}>
+            Overiť kód
+          </button>
         </>
       )}
 
