@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth, RecaptchaVerifier } from "../lib/firebase";
 import { signInWithPhoneNumber } from "firebase/auth";
 
@@ -8,19 +8,23 @@ export default function LoginPage() {
   const [confirmResult, setConfirmResult] = useState(null);
   const [step, setStep] = useState(1);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        { size: "invisible" },
+        auth
+      );
+    }
+  }, []);
+
   const handleSendCode = async () => {
     try {
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
-          size: "invisible",
-          callback: () => {}
-        }, auth);
-      }
-
       const appVerifier = window.recaptchaVerifier;
       const result = await signInWithPhoneNumber(auth, phone, appVerifier);
       setConfirmResult(result);
       setStep(2);
+      alert("Kód bol odoslaný ✅");
     } catch (error) {
       console.error("Chyba pri odoslaní kódu", error);
       alert("Nepodarilo sa odoslať kód.");
@@ -30,15 +34,15 @@ export default function LoginPage() {
   const handleVerifyCode = async () => {
     try {
       await confirmResult.confirm(code);
-      alert("✅ Prihlásenie úspešné");
+      alert("Prihlásenie úspešné 🎉");
     } catch (error) {
       alert("Nesprávny kód.");
     }
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Test Login (bez SMS)</h2>
+    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+      <h2>Prihlásenie</h2>
 
       {step === 1 && (
         <>
@@ -50,7 +54,7 @@ export default function LoginPage() {
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
           <button onClick={handleSendCode} style={{ width: "100%", padding: "1rem" }}>
-            Poslať test kód
+            Odoslať kód
           </button>
         </>
       )}
@@ -59,13 +63,13 @@ export default function LoginPage() {
         <>
           <input
             type="text"
-            placeholder="Zadaj testovací kód (napr. 123456)"
             value={code}
             onChange={(e) => setCode(e.target.value)}
+            placeholder="Zadaj overovací kód"
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
           <button onClick={handleVerifyCode} style={{ width: "100%", padding: "1rem" }}>
-            Overiť test kód
+            Overiť kód
           </button>
         </>
       )}
