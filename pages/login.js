@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { auth } from "../lib/firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth, RecaptchaVerifier } from "../lib/firebase";
+import { signInWithPhoneNumber } from "firebase/auth";
 
 export default function LoginPage() {
   const [phone, setPhone] = useState("+421900000000");
@@ -10,33 +10,34 @@ export default function LoginPage() {
 
   const handleSendCode = async () => {
     try {
-      window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
-        size: "invisible",
-        callback: () => {},
-      }, auth);
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
+          size: "invisible",
+          callback: () => {}
+        }, auth);
+      }
 
       const appVerifier = window.recaptchaVerifier;
       const result = await signInWithPhoneNumber(auth, phone, appVerifier);
       setConfirmResult(result);
       setStep(2);
     } catch (error) {
+      console.error("Chyba pri odoslaní kódu", error);
       alert("Nepodarilo sa odoslať kód.");
-      console.error(error);
     }
   };
 
   const handleVerifyCode = async () => {
     try {
       await confirmResult.confirm(code);
-      alert("Prihlásenie úspešné ✅");
+      alert("✅ Prihlásenie úspešné");
     } catch (error) {
       alert("Nesprávny kód.");
-      console.error(error);
     }
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+    <div style={{ padding: "2rem" }}>
       <h2>Test Login (bez SMS)</h2>
 
       {step === 1 && (
@@ -45,6 +46,7 @@ export default function LoginPage() {
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            placeholder="+421900000000"
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
           <button onClick={handleSendCode} style={{ width: "100%", padding: "1rem" }}>
