@@ -15,8 +15,8 @@ export default function LoginPage() {
           "recaptcha-container",
           {
             size: "invisible",
-            callback: (response) => {
-              console.log("reCAPTCHA resolved");
+            callback: () => {
+              console.log("reCAPTCHA vyriešené");
             },
           },
           auth
@@ -27,6 +27,7 @@ export default function LoginPage() {
 
   const handleSendCode = async () => {
     if (typeof window === "undefined") return;
+
     const appVerifier = window.recaptchaVerifier;
 
     try {
@@ -34,8 +35,8 @@ export default function LoginPage() {
       setConfirmResult(result);
       setStep(2);
     } catch (error) {
-      console.error("Chyba pri odosielaní kódu", error);
-      alert("Chyba pri odosielaní kódu.");
+      console.error("Chyba pri odoslaní kódu", error);
+      alert("Chyba pri odoslaní kódu.");
     }
   };
 
@@ -44,7 +45,7 @@ export default function LoginPage() {
       await confirmResult.confirm(code);
       alert("Prihlásenie úspešné ✅");
     } catch (error) {
-      console.error("Chyba pri overení kódu", error);
+      console.error("Chyba pri overení", error);
       alert("Nesprávny kód.");
     }
   };
@@ -52,6 +53,9 @@ export default function LoginPage() {
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       <h2>Prihlásenie</h2>
+
+      {/* DEBUG - len aby si vedel že to beží na klientovi */}
+      {typeof window === "undefined" && <p>⚠️ Beží na serveri</p>}
 
       {step === 1 && (
         <>
@@ -62,10 +66,7 @@ export default function LoginPage() {
             onChange={(e) => setPhone(e.target.value)}
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
-          <button
-            onClick={handleSendCode}
-            style={{ width: "100%", padding: "1rem" }}
-          >
+          <button onClick={handleSendCode} style={{ width: "100%", padding: "1rem" }}>
             Odoslať kód
           </button>
         </>
@@ -80,16 +81,15 @@ export default function LoginPage() {
             onChange={(e) => setCode(e.target.value)}
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
-          <button
-            onClick={handleVerifyCode}
-            style={{ width: "100%", padding: "1rem" }}
-          >
+          <button onClick={handleVerifyCode} style={{ width: "100%", padding: "1rem" }}>
             Overiť
           </button>
         </>
       )}
 
+      {/* dôležité pre invisible recaptcha */}
       <div id="recaptcha-container"></div>
     </div>
   );
 }
+
