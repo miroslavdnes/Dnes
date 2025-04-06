@@ -9,32 +9,30 @@ export default function LoginPage() {
 
   const handleSendCode = async () => {
     try {
-      const result = await signInWithPhoneNumber(
-        auth,
-        phone,
-        window.recaptchaVerifier
-      );
+      const result = await signInWithPhoneNumber(auth, phone, {
+        appVerificationDisabledForTesting: true,
+      });
       setConfirmResult(result);
-      alert("Testovacie číslo, zadaj kód: 123456");
+      alert("Zadaj testovací kód: 123456");
     } catch (error) {
-      console.error("Chyba pri odoslaní kódu", error);
-      alert("Chyba pri odoslaní kódu.");
+      console.error("Chyba pri odoslaní kódu:", error);
+      alert("Nepodarilo sa odoslať kód.");
     }
   };
 
   const handleVerifyCode = async () => {
     try {
       await confirmResult.confirm(code);
-      alert("Prihlásenie úspešné ✅");
+      alert("Prihlásený! ✅");
     } catch (error) {
-      alert("Zlý overovací kód.");
-      console.error(error);
+      alert("Zlý kód");
     }
   };
 
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       <h2>Test Login (bez SMS)</h2>
+
       {!confirmResult ? (
         <>
           <input
@@ -43,7 +41,10 @@ export default function LoginPage() {
             placeholder="+421..."
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
-          <button onClick={handleSendCode} style={{ width: "100%", padding: "1rem" }}>
+          <button
+            onClick={handleSendCode}
+            style={{ width: "100%", padding: "1rem" }}
+          >
             Poslať test kód
           </button>
         </>
@@ -55,7 +56,10 @@ export default function LoginPage() {
             placeholder="Zadaj testovací kód (123456)"
             style={{ width: "100%", padding: "1rem", marginBottom: "1rem" }}
           />
-          <button onClick={handleVerifyCode} style={{ width: "100%", padding: "1rem" }}>
+          <button
+            onClick={handleVerifyCode}
+            style={{ width: "100%", padding: "1rem" }}
+          >
             Overiť
           </button>
         </>
@@ -63,3 +67,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
