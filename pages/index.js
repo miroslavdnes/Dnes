@@ -1,4 +1,3 @@
-
 import Footer from '../components/Footer';
 import { useState } from 'react';
 
@@ -39,7 +38,7 @@ export default function HomePage() {
       <div style={{ padding: '2rem 1rem 5rem', fontFamily: 'sans-serif' }}>
         <h1 style={{ fontSize: '28px', fontWeight: 'bold' }}>DNESKA</h1>
         <h2 style={{ fontSize: '20px', marginTop: '0.5rem' }}>
-          Dnes sa deje v Bratislave (zoradené podľa popularity)
+          Dnes sa deje v Bratislave
         </h2>
 
         <div style={{ marginTop: '2rem' }}>
